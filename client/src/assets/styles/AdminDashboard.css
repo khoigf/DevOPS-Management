@@ -1,0 +1,79 @@
+.admin-dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.dashboard-main {
+    display: flex;
+    flex: 1;
+}
+.dashboard-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+.dashboard-header {
+    margin-bottom: 20px;
+}
+.dashboard-widgets {
+    display: flex;
+    gap: 20px;
+}
+.widget {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+}
+.dashboard-links {
+    margin-top: 20px;
+}
+.dashboard-link {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.dashboard-link:hover {
+    background-color: #2980b9;
+}
+
+/* AdminHome.css */
+.admin-home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.home-main {
+    display: flex;
+    flex: 1;
+}
+.home-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+.home-links {
+    display: flex;
+    gap: 20px;
+}
+.home-link {
+    flex: 1;
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.home-link:hover {
+    background-color: #27ae60;
+}
