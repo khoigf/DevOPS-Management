@@ -9,6 +9,7 @@ import ProfilePage from '../pages/Profile/Profile';
 import UserProfilePage from '../pages/Profile/UserProfile';
 import ProtectedRoute from './ProtectedRoute';
 import ChangePassword from '../pages/Settings/ChangePassword';
+import UserChangePassword from '../pages/Settings/UserChangePass'
 
 const AppRoutes = () => {
     return (
@@ -60,6 +61,13 @@ const AppRoutes = () => {
                     element={
                         <ProtectedRoute>
                             <ChangePassword />
+                        </ProtectedRoute>
+                    } 
+                />;
+                <Route path="user/settings" 
+                    element={
+                        <ProtectedRoute>
+                            <UserChangePassword />
                         </ProtectedRoute>
                     } 
                 />;
