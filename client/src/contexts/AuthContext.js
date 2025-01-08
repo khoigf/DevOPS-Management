@@ -25,7 +25,8 @@ const AuthProvider = ({ children }) => {
 
       // Cập nhật user và token
       const { userId, name, role, accessToken, refreshToken } = response.data;
-      const userData = { userId, name, role };
+      const mail = response.data.email;
+      const userData = { userId, name, role, mail };
       const tokenData = { accessToken, refreshToken };
 
       setUser(userData);

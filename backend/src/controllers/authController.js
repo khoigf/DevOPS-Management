@@ -45,17 +45,20 @@ const login = async (req, res) => {
             return res.status(401).json({ error: 'Invalid password' });
         }
 
-        // Tạo JWT
-        const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+        // Tạo token JWT
+        const token = jwt.sign(
+            { userId: user._id, role: user.role }, // Payload
+            process.env.JWT_SECRET,               // Secret key
+            { expiresIn: '12h' }                   // Token hết hạn sau 12 giờ
+        );
 
         return res.status(200).json({
             userId: user._id,
             name: user.username,
             email: user.email,
             role: user.role,
-            accessToken,
-            refreshToken,
+            accessToken: token,
+            refreshToken: token,
         });
     } catch (error) {
         console.error('Error in login:', error);
@@ -72,4 +75,31 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout };
+const changePassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword } = req.body;
+        const userId = req.user.userId;
+        const user = await User.findById(userId);
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        // Kiểm tra mật khẩu cũ
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) return res.status(400).json({ message: 'Incorrect old password' });
+
+        user.password = newPassword;
+
+        await user.save();
+        res.status(200).json({ message: 'Password updated successfully!' });
+    }catch (error) {
+        console.error('Error in changePassword:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports = { 
+    register, 
+    login, 
+    logout,
+    changePassword,
+};

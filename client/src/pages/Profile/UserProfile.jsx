@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
-import Navbar from '../../components/Layout/Navbar';
-import Sidebar from '../../components/Layout/Sidebar';
+import UserNavbar from '../../components/Layout/UserNavbar';
+import UserSidebar from '../../components/Layout/UserSidebar';
 import { AuthContext } from '../../contexts/AuthContext';
-import '../../assets/styles/AdminDashboard.css';
+import '../../assets/styles/dashboard.css';
 
-const ProfilePage = () => {
+const UserProfilePage = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="admin-dashboard">
-            <Navbar />
+    <div className="user-dashboard">
+            <UserNavbar />
             <div>
-                <Sidebar />
+                <UserSidebar />
                 <div className="dashboard-profile">
                   <div className="profile-card">
                     <h1>Profile</h1>
@@ -34,4 +34,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default UserProfilePage;

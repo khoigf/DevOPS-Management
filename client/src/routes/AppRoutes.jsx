@@ -6,7 +6,9 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import UserManagement from '../pages/Admin/UserManagement';
 import AdminDashboard from '../pages/Admin/AdminDashboard';
 import ProfilePage from '../pages/Profile/Profile';
+import UserProfilePage from '../pages/Profile/UserProfile';
 import ProtectedRoute from './ProtectedRoute';
+import ChangePassword from '../pages/Settings/ChangePassword';
 
 const AppRoutes = () => {
     return (
@@ -46,6 +48,21 @@ const AppRoutes = () => {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/userProfile"
+                    element={
+                        <ProtectedRoute>
+                            <UserProfilePage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="/settings" 
+                    element={
+                        <ProtectedRoute>
+                            <ChangePassword />
+                        </ProtectedRoute>
+                    } 
+                />;
             </Routes>
         </Router>
     );
