@@ -8,6 +8,7 @@ const initAdmin = require('./initAdmin');
 const app = express();
 const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+const projectRoutes = require('./src/routes/projectRoutes');
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/admin', userRoutes);
+app.use('/user', projectRoutes);
 
 // Lắng nghe server
 const PORT = process.env.PORT || 5000;
