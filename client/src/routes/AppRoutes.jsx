@@ -9,7 +9,8 @@ import ProfilePage from '../pages/Profile/Profile';
 import UserProfilePage from '../pages/Profile/UserProfile';
 import ProtectedRoute from './ProtectedRoute';
 import ChangePassword from '../pages/Settings/ChangePassword';
-import UserChangePassword from '../pages/Settings/UserChangePass'
+import UserChangePassword from '../pages/Settings/UserChangePass';
+import ProjectList from '../pages/Project/ProjectManagement';
 
 const AppRoutes = () => {
     return (
@@ -17,6 +18,8 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                
+                {/* Dashboard Routes */}
                 <Route 
                     path="/dashboard" 
                     element={
@@ -25,6 +28,8 @@ const AppRoutes = () => {
                         </ProtectedRoute>
                     } 
                 />
+                
+                {/* Admin Routes */}
                 <Route
                     path="/admin-dashboard"
                     element={
@@ -41,6 +46,8 @@ const AppRoutes = () => {
                         </ProtectedRoute>
                     }
                 />
+                
+                {/* Profile Routes */}
                 <Route
                     path="/profile"
                     element={
@@ -57,20 +64,34 @@ const AppRoutes = () => {
                         </ProtectedRoute>
                     }
                 />
-                <Route path="/settings" 
+
+                {/* Settings Routes */}
+                <Route 
+                    path="/settings" 
                     element={
                         <ProtectedRoute>
                             <ChangePassword />
                         </ProtectedRoute>
                     } 
-                />;
-                <Route path="user/settings" 
+                />
+                <Route 
+                    path="/user/settings" 
                     element={
                         <ProtectedRoute>
                             <UserChangePassword />
                         </ProtectedRoute>
                     } 
-                />;
+                />
+
+                {/* Project Management Routes */}
+                <Route 
+                    path="/project" 
+                    element={
+                        <ProtectedRoute>
+                            <ProjectList />
+                        </ProtectedRoute>
+                    } 
+                />
             </Routes>
         </Router>
     );

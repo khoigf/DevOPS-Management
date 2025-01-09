@@ -13,7 +13,7 @@ const UserSidebar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/dashboard">
+                    <Link to="/project">
                         <FaProjectDiagram className="icon" /> Project
                     </Link>
                 </li>

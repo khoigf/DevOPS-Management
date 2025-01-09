@@ -40,7 +40,7 @@ router.delete('/projects/tools/:tool_id', authenticate, projectController.delete
 
 // Configuration management routes
 router.post('/projects/config/:project_id', authenticate, projectController.addConfiguration);
-router.get('/projects/config/all/:project_id', authenticate, projectController.getAllConfig);
+router.get('/projects/config/all/:project_id', authenticate, projectController.getAllConfigurations);
 router.get('/projects/config/:config_id', authenticate, projectController.getConfigurationById);
 router.put('/projects/config/:config_id', authenticate, projectController.updateConfiguration);
 

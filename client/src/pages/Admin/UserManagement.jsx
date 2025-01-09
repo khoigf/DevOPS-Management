@@ -265,6 +265,7 @@ const UserManagement = () => {
             <div className="modal">
               <div className="modal-content">
                 <h2>{editMode ? 'Edit User' : 'Add User'}</h2>
+                <strong>Username</strong>
                 <input
                   type="text"
                   placeholder="Username"
@@ -273,6 +274,7 @@ const UserManagement = () => {
                     setUserForm({ ...userForm, username: e.target.value })
                   }
                 />
+                <strong>Email</strong>
                 <input
                   type="email"
                   placeholder="Email"
@@ -281,13 +283,16 @@ const UserManagement = () => {
                     setUserForm({ ...userForm, email: e.target.value })
                   }
                 />
+                <strong>Role</strong>
                 <input
                   type="text"
                   placeholder="Role"
                   value={userForm.role}
                   onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}
                 />
-                {!editMode && (
+                {!editMode &&(
+                  <div>
+                  <strong>Password</strong>
                   <input
                     type="password"
                     placeholder="Password"
@@ -296,6 +301,7 @@ const UserManagement = () => {
                       setUserForm({ ...userForm, password: e.target.value })
                     }
                   />
+                  </div>
                 )}
                 <div className="modal-actions">
                   <button className="save-btn" onClick={handleSubmit}>

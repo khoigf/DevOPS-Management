@@ -73,3 +73,153 @@
 .action-btn:hover {
   background-color: #0056b3;
 }
+
+.project-management-section {
+  margin-top: 20px;
+  margin-left: 150px;
+}
+
+.project-management-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.btn-add-project {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-add-project:hover {
+  background-color: #0056b3;
+}
+
+.project-table-wrapper {
+  overflow-x: auto;
+}
+
+.project-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.project-table th,
+.project-table td {
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.project-table th {
+  background-color: #1b8d95;
+  font-weight: bold;
+}
+
+.project-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.project-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.edit-btn:hover {
+  background-color: #22a35c;
+}
+
+/* project-Modal Styles */
+.project-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.project-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.project-modal-content h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.project-modal-content input,
+.project-modal-content textarea {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.project-modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.view-btn {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #507cda;
+  color: #fff;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
