@@ -1,4 +1,12 @@
 const User = require('../models/User');
+const Project = require('../models/Project');
+const Phase = require('../models/Phase');
+const Member = require('../models/Member');
+const Task = require('../models/Task');
+const Tool = require('../models/Tool');
+const Configuration = require('../models/Configuration');
+const Issue = require('../models/Issue');
+const Log = require('../models/Log');
 
 exports.addUser = async (req, res) => {
   const { username, password, email, role } = req.body;
@@ -47,6 +55,17 @@ exports.deleteUser = async (req, res) => {
 
   try {
     const deletedUser = await User.findByIdAndDelete(user_id);
+    const projects = await Project.find({ owner_id: user_id });
+    for (let project of projects) {
+      await Phase.deleteMany({ project_id: project._id });
+      await Member.deleteMany({ project_id: project._id });
+      await Task.deleteMany({ project_id: project._id });
+      await Tool.deleteMany({ project_id: project._id });
+      await Configuration.deleteMany({ project_id: project._id });
+      await Issue.deleteMany({ project_id: project._id });
+      await Log.deleteMany({ project_id: project._id });
+    }
+    await Project.deleteMany({ owner_id: user_id });
 
     if (!deletedUser) {
       return res.status(404).json({ error: 'User not found' });

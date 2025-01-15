@@ -5,17 +5,20 @@ const Task = require('../models/Task');
 const Tool = require('../models/Tool');
 const Configuration = require('../models/Configuration');
 const Issue = require('../models/Issue');
+const Log = require('../models/Log');
 
 // Create project
 exports.createProject = async (req, res) => {
     const { user_id } = req.params;
-    const { name, description, start_date, end_date } = req.body;
+    const { name, description, start_date, end_date, owner, repo } = req.body;
 
     try {
         const newProject = new Project({
             owner_id: user_id,
             name,
             description,
+            owner,
+            repo,
             start_date,
             end_date,
             current_status: 1 // Assuming 1 is the default status
@@ -31,12 +34,14 @@ exports.createProject = async (req, res) => {
 // Update project
 exports.updateProject = async (req, res) => {
     const { project_id } = req.params;
-    const { name, description, start_date, end_date, current_status } = req.body;
+    const { name, description, owner, repo, start_date, end_date, current_status } = req.body;
 
     try {
         await Project.findByIdAndUpdate(project_id, {
             name,
             description,
+            owner,
+            repo,
             start_date,
             end_date,
             current_status
@@ -78,6 +83,13 @@ exports.deleteProject = async (req, res) => {
 
     try {
         await Project.findByIdAndDelete(project_id);
+        await Phase.findAndDelete({ project_id });
+        await Member.findAndDelete({ project_id });
+        await Task.findAndDelete({ project_id });
+        await Tool.findAndDelete({ project_id });
+        await Configuration.findAndDelete({ project_id });
+        await Issue.findAndDelete({ project_id });
+        await Log.findAndDelete({ project_id });
         res.status(200).json({ message: 'Project deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -165,10 +177,10 @@ exports.deletePhase = async (req, res) => {
 // Member management
 exports.addMember = async (req, res) => {
     const { project_id } = req.params;
-    const { user_id, role } = req.body;
+    const { name, role } = req.body;
 
     try {
-        const newMember = new Member({ project_id, user_id, role });
+        const newMember = new Member({ project_id, name, role });
         await newMember.save();
         res.status(201).json({ message: 'Member added successfully' });
     } catch (error) {
@@ -215,6 +227,7 @@ exports.deleteMember = async (req, res) => {
 
     try {
         await Member.findByIdAndDelete(member_id);
+        await Task.findAndDelete({ assigned_to: member_id });
         res.status(200).json({ message: 'Member removed successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -237,10 +250,10 @@ exports.addTaskToMember = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
     const { task_id } = req.params;
-    const { assigned_to, name, description, status } = req.body;
+    const { name, description, status } = req.body;
 
     try {
-        await Task.findByIdAndUpdate(task_id, { assigned_to, name, description, status });
+        await Task.findByIdAndUpdate(task_id, { name, description, status });
         res.status(200).json({ message: 'Task updated successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -279,6 +292,16 @@ exports.getTaskById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getTasksByMember = async (req, res) => {
+    const { member_id } = req.params;
+    try {
+        const tasks = await Task.find({ assigned_to: member_id }).populate('assigned_to');
+        res.status(200).json(tasks);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 // Tool management
 exports.addTool = async (req, res) => {
@@ -376,12 +399,23 @@ exports.getConfigurationById = async (req, res) => {
 
 exports.updateConfiguration = async (req, res) => {
     const { config_id } = req.params;
-    const { value } = req.body;
+    const { name, value } = req.body;
 
     try {
-        await Configuration.findByIdAndUpdate(config_id, { value });
+        await Configuration.findByIdAndUpdate(config_id, { name, value });
         res.status(200).json({ message: 'Configuration updated successfully' });
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.deleteConfiguration = async (req, res) => {
+    const { config_id } = req.params;
+    try {
+        await Configuration.findByIdAndDelete(config_id);
+        res.status(200).json({ message: 'Configuration deleted successfully' });
+    }
+    catch (error) {
         res.status(500).json({ error: error.message });
     }
 };

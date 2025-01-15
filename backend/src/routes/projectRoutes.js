@@ -30,6 +30,7 @@ router.put('/projects/tasks/:task_id', authenticate, projectController.updateTas
 router.delete('/projects/tasks/:task_id', authenticate, projectController.deleteTask);
 router.get('/projects/tasks/all/:project_id', authenticate, projectController.getAllTasks);
 router.get('/projects/tasks/:task_id', authenticate, projectController.getTaskById);
+router.get('/projects/tasks/member/:member_id', authenticate, projectController.getTasksByMember);
 
 // Tool management routes
 router.post('/projects/tools/:project_id', authenticate, projectController.addTool);
@@ -43,6 +44,7 @@ router.post('/projects/config/:project_id', authenticate, projectController.addC
 router.get('/projects/config/all/:project_id', authenticate, projectController.getAllConfigurations);
 router.get('/projects/config/:config_id', authenticate, projectController.getConfigurationById);
 router.put('/projects/config/:config_id', authenticate, projectController.updateConfiguration);
+router.delete('/projects/config/:config_id', authenticate, projectController.deleteConfiguration);
 
 // Issue management routes
 router.get('/projects/issues/all/:project_id', authenticate, projectController.getAllIssues);
