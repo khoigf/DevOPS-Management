@@ -18,7 +18,60 @@
 .sidebar ul li a {
     color: #fff;
     text-decoration: none;
+    border-radius: 5px;
+    padding: 5px;
 }
 .sidebar ul li a:hover {
-    text-decoration: underline;
+    background-color: #24979f;
+}
+
+.sidebar-link {
+    display: block;
+    background: none;
+    border: none;
+    color: #fff;
+    margin-left: 20px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.sidebar-link:hover {
+    background-color: #24979f;
+}
+
+.change-project-btn {
+    margin: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.change-project-btn:hover {
+    background-color: #0056b3;
+}
+
+.selected-project {
+    margin: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.selected-project p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.selected-project h3 {
+    margin: 5px 0 0 0;
+    font-size: 18px;
+    color: #343a40;
 }

@@ -134,6 +134,12 @@
   background-color: #22a35c;
 }
 
+.project-detail-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
 /* project-Modal Styles */
 .project-modal {
   position: fixed;
@@ -222,4 +228,124 @@
 
 .cancel-btn:hover {
   background-color: #c82333;
+}
+
+/* Task Modal Overlay */
+.task-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Task Modal Content */
+.task-modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* Modal Header */
+.task-modal h2 {
+  margin-bottom: 16px;
+  font-size: 1.5em;
+  color: #333;
+}
+
+/* Add Task Button */
+.btn-add-task {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-add-task:hover {
+  background-color: #0056b3;
+}
+
+/* Search Input */
+.search-task-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+/* Task Table Wrapper */
+.task-table-wrapper {
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+/* Task Table */
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 0.9em;
+}
+
+.task-table thead {
+  background-color: #f7f7f7;
+}
+
+.task-table th,
+.task-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.task-table th {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.task-table tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.task-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Status Text */
+.task-table td span {
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.task-table td span.status-pending {
+  background-color: #ffc107;
+}
+
+.task-table td span.status-in-process {
+  background-color: #007bff;
+}
+
+.task-table td span.status-done {
+  background-color: #28a745;
 }

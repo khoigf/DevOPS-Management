@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../../components/Layout/UserNavbar';
 import Sidebar from '../../components/Layout/UserSidebar';
 import '../../assets/styles/user/UserDashboard.css'; // Project Management styles
@@ -17,12 +18,14 @@ const ProjectManagement = () => {
   const [projectForm, setProjectForm] = useState({
     name: '',
     description: '',
+    owner: '',
+    repo: '',
     start_date: '',
     end_date: '',
     current_status: '0', // Default to "Not Start"
   });
   const [selectedProject, setSelectedProject] = useState(null); // For viewing project details
-
+  const navigate = useNavigate();
   // Get userId and token from localStorage
   const getUserId = () => {
     const user = JSON.parse(localStorage.getItem('user')); // Save userId in localStorage on login
@@ -170,6 +173,8 @@ const ProjectManagement = () => {
       setProjectForm({
         name: project.name,
         description: project.description,
+        owner: project.owner,
+        repo: project.repo,
         start_date: project.start_date,
         end_date: project.end_date,
         current_status: project.current_status || '0',
@@ -179,6 +184,8 @@ const ProjectManagement = () => {
       setProjectForm({
         name: '',
         description: '',
+        owner: '',
+        repo: '',
         start_date: '',
         end_date: '',
         current_status: '0',
@@ -198,6 +205,12 @@ const ProjectManagement = () => {
     setShowConfirmModal(true);
   };
 
+  const handleProjectDetailNavigation = (path, project) => {
+    setSelectedProject(project);
+    localStorage.setItem('selectedProject', JSON.stringify(project));
+    navigate('/project' + path);
+  };
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -205,7 +218,7 @@ const ProjectManagement = () => {
   const getStatusText = (status) => {
     switch (status) {
       case '1':
-        return 'In Process';
+        return 'Active';
       case '2':
         return 'Done';
       default:
@@ -264,7 +277,7 @@ const ProjectManagement = () => {
                       <td>{getStatusText(project.current_status)}</td>
                       <td>
                         <button className="view-btn" onClick={() => fetchProjectById(project._id)}>
-                          View
+                          Details
                         </button>
                         <button className="edit-btn" onClick={() => openModal(project)}>
                           Edit
@@ -314,6 +327,20 @@ const ProjectManagement = () => {
                     setProjectForm({ ...projectForm, description: e.target.value })
                   }
                 />
+                <textarea
+                  placeholder="GitHub Owner"
+                  value={projectForm.owner}
+                  onChange={(e) =>
+                    setProjectForm({ ...projectForm, owner: e.target.value })
+                  }
+                />
+                <textarea
+                  placeholder="Name GitHub Repository"
+                  value={projectForm.repo}
+                  onChange={(e) =>
+                    setProjectForm({ ...projectForm, repo: e.target.value })
+                  }
+                />
                 <h4>Start Date - End Date</h4>
                 <input
                   type="date"
@@ -357,9 +384,18 @@ const ProjectManagement = () => {
                 <h2>Project Details</h2>
                 <p><strong>Name:</strong> {selectedProject.name}</p>
                 <p><strong>Description:</strong> {selectedProject.description}</p>
+                <p><strong>GitHub Owner:</strong> {selectedProject.owner}</p>
+                <p><strong>GitHub Repo:</strong> {selectedProject.repo}</p>
                 <p><strong>Start Date:</strong> {selectedProject.start_date}</p>
                 <p><strong>End Date:</strong> {selectedProject.end_date}</p>
                 <p><strong>Status:</strong> {getStatusText(selectedProject.current_status)}</p>
+                <div className="project-detail-actions">
+                  <button className="view-btn" onClick={() => handleProjectDetailNavigation('/phase', selectedProject)}>View Phases</button>
+                  <button className="view-btn" onClick={() => handleProjectDetailNavigation('/member', selectedProject)}>View Members</button>
+                  <button className="view-btn" onClick={() => handleProjectDetailNavigation('/devops-tool', selectedProject)}>View Tools</button>
+                  <button className="view-btn" onClick={() => handleProjectDetailNavigation('/devops-config', selectedProject)}>View Configs</button>
+                  <button className="view-btn" onClick={() => handleProjectDetailNavigation('/issue', selectedProject)}>View Issues</button>
+                </div>
                 <button className="cancel-btn" onClick={closeModal}>Close</button>
               </div>
             </div>

@@ -1,0 +1,27 @@
+.project-list {
+    list-style: none;
+    padding: 0;
+}
+
+.project-list li {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px;
+    background: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.project-list li:hover {
+    background: #eaeaea;
+}
+
+.close-btn {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

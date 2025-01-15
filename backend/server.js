@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const connectDB = require('./src/config/db');
 const initAdmin = require('./initAdmin'); 
+const {scheduleAllProjects} = require('./src/scheduler');
 
 const app = express();
 const authRoutes = require('./src/routes/authRoutes');
@@ -24,6 +25,8 @@ initAdmin();
 app.get('/', (req, res) => {
   res.send('DevOps Management Backend is running!');
 });
+
+scheduleAllProjects();
 
 app.use('/auth', authRoutes);
 app.use('/admin', userRoutes);
