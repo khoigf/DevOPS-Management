@@ -9,6 +9,8 @@ const ConfigManagement = () => {
     const [message, setMessage] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [page, setPage] = useState(1); // Current page
+    const [itemsPerPage] = useState(5); // Items per page
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -24,6 +26,21 @@ const ConfigManagement = () => {
         const tokens = JSON.parse(localStorage.getItem('tokens'));
         return tokens?.accessToken || '';
     };
+    // Filter and paginate configurations
+    const filteredConfigs = configs.filter((config) =>
+        config.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const totalItems = filteredConfigs.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const startIndex = (page - 1) * itemsPerPage;
+    const currentPageConfigs = filteredConfigs.slice(startIndex, startIndex + itemsPerPage);
+
+    // Handle pagination
+    const goToPage = (pageNumber) => {
+        setPage(pageNumber);
+    };
+
 
     const fetchConfigs = async () => {
         try {
@@ -51,7 +68,6 @@ const ConfigManagement = () => {
             setMessage('Error fetching configurations.');
         }
     };
-
     const fetchConfigById = async (configId) => {
         try {
             const token = getAccessToken();
@@ -223,13 +239,13 @@ const ConfigManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {configs
+                                    {currentPageConfigs
                                         .filter((config) =>
                                             config.name.toLowerCase().includes(searchTerm.toLowerCase())
                                         )
                                         .map((config, index) => (
                                             <tr key={config._id}>
-                                                <td>{index + 1}</td>
+                                                <td>{startIndex + index + 1}</td>
                                                 <td>{config.name}</td>
                                                 <td>{config.value}</td>
                                                 <td>
@@ -247,6 +263,30 @@ const ConfigManagement = () => {
                                         ))}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                            <button className='pagination-btn'
+                                disabled={page === 1}
+                                onClick={() => goToPage(page - 1)}
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button 
+                                    id='page-btn'
+                                    key={i + 1}
+                                    className={page === i + 1 ? 'active' : ''}
+                                    onClick={() => goToPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button className='pagination-btn'
+                                disabled={page === totalPages}
+                                onClick={() => goToPage(page + 1)}
+                            >
+                                Next
+                            </button>
                         </div>
                     </div>
                     {showConfirmModal && (
