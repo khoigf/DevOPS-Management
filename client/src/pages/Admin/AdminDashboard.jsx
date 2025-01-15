@@ -53,7 +53,7 @@ const AdminDashboard = () => {
       <Navbar />
       <div className="dashboard-main">
         <Sidebar />
-        <div className="dashboard-content">
+        <div className="admin-dashboard-content">
           <header className="dashboard-header">
             <h1>Dashboard</h1>
             <p>Welcome to the admin panel. Manage your application efficiently.</p>

@@ -8,6 +8,8 @@ import { API_BASE_URL } from '../../utils/apiConfig';
 const ProjectManagement = () => {
   const [projects, setProjects] = useState([]);
   const [message, setMessage] = useState('');
+  const [page, setPage] = useState(1); // Current page
+  const [itemsPerPage] = useState(5); // Items per page
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -31,6 +33,21 @@ const ProjectManagement = () => {
     const user = JSON.parse(localStorage.getItem('user')); // Save userId in localStorage on login
     return user?.userId || null;
   };
+      // Filter and paginate configurations
+      const filteredConfigs = projects.filter((config) =>
+        config.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const totalItems = filteredConfigs.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const startIndex = (page - 1) * itemsPerPage;
+    const currentPageConfigs = filteredConfigs.slice(startIndex, startIndex + itemsPerPage);
+
+    // Handle pagination
+    const goToPage = (pageNumber) => {
+        setPage(pageNumber);
+    };
+
 
   const getAccessToken = () => {
     const tokens = JSON.parse(localStorage.getItem('tokens')); // Token stored as JSON object
@@ -264,13 +281,13 @@ const ProjectManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {projects
+                  {currentPageConfigs
                     .filter((project) =>
                       project.name.toLowerCase().includes(searchTerm.toLowerCase())
                     )
                     .map((project, index) => (
                     <tr key={project._id}>
-                      <td>{index + 1}</td>
+                      <td>{startIndex + index + 1}</td>
                       <td>{project.name}</td>
                       <td>{project.start_date}</td>
                       <td>{project.end_date}</td>
@@ -291,6 +308,30 @@ const ProjectManagement = () => {
                 </tbody>
               </table>
             </div>
+            <div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                            <button className='pagination-btn'
+                                disabled={page === 1}
+                                onClick={() => goToPage(page - 1)}
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button 
+                                    id='page-btn'
+                                    key={i + 1}
+                                    className={page === i + 1 ? 'active' : ''}
+                                    onClick={() => goToPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button className='pagination-btn'
+                                disabled={page === totalPages}
+                                onClick={() => goToPage(page + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
           </div>
           {showConfirmModal && (
             <div className="project-modal">

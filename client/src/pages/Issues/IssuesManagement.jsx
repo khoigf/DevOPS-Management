@@ -7,6 +7,8 @@ import { API_BASE_URL } from '../../utils/apiConfig';
 const IssueManagement = () => {
     const [issues, setIssues] = useState([]);
     const [message, setMessage] = useState('');
+    const [page, setPage] = useState(1); // Current page
+    const [itemsPerPage] = useState(5); // Items per page
     const [searchTerm, setSearchTerm] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -25,6 +27,22 @@ const IssueManagement = () => {
         const tokens = JSON.parse(localStorage.getItem('tokens')); // Token stored as JSON object
         return tokens?.accessToken || '';
     };
+
+        // Filter and paginate configurations
+        const filteredConfigs = issues.filter((config) =>
+            config.severity.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    
+        const totalItems = filteredConfigs.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const startIndex = (page - 1) * itemsPerPage;
+        const currentPageConfigs = filteredConfigs.slice(startIndex, startIndex + itemsPerPage);
+    
+        // Handle pagination
+        const goToPage = (pageNumber) => {
+            setPage(pageNumber);
+        };
+    
 
     // Fetch all issues
     const fetchIssues = async () => {
@@ -176,13 +194,13 @@ const IssueManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {issues
+                                    {currentPageConfigs
                                         .filter((issue) =>
                                             issue.severity.toLowerCase().includes(searchTerm.toLowerCase())
                                         )
                                         .map((issue, index) => (
                                         <tr key={issue._id}>
-                                            <td>{index + 1}</td>
+                                            <td>{startIndex + index + 1}</td>
                                             <td>{issue.severity}</td>
                                             <td>{issue.description}</td>
                                             <td>{getStatusText(issue.status)}</td>
@@ -199,6 +217,53 @@ const IssueManagement = () => {
                                 </tbody>
                             </table>
                         </div>
+                        <div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                            <button className='pagination-btn'
+                                disabled={page === 1}
+                                onClick={() => goToPage(page - 1)}
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button 
+                                    id='page-btn'
+                                    key={i + 1}
+                                    className={page === i + 1 ? 'active' : ''}
+                                    onClick={() => goToPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button className='pagination-btn'
+                                disabled={page === totalPages}
+                                onClick={() => goToPage(page + 1)}
+                            >
+                                Next
+                            </button>
+                        </div><div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                        <button className='pagination-btn'
+                            disabled={page === 1}
+                            onClick={() => goToPage(page - 1)}
+                        >
+                            Previous
+                        </button>
+                        {Array.from({ length: totalPages }, (_, i) => (
+                            <button 
+                                id='page-btn'
+                                key={i + 1}
+                                className={page === i + 1 ? 'active' : ''}
+                                onClick={() => goToPage(i + 1)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                        <button className='pagination-btn'
+                            disabled={page === totalPages}
+                            onClick={() => goToPage(page + 1)}
+                        >
+                            Next
+                        </button>
+                    </div>
                     </div>
                     {showModal && (
                         <div className="project-modal">

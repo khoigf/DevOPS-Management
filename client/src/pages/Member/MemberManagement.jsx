@@ -8,6 +8,8 @@ const MemberManagement = () => {
     const [members, setMembers] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [message, setMessage] = useState('');
+    const [page, setPage] = useState(1); // Current page
+    const [itemsPerPage] = useState(5); // Items per page
     const [searchTerm, setSearchTerm] = useState('');
     const [searchTaskTerm, setSearchTaskTerm] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -33,6 +35,22 @@ const MemberManagement = () => {
     });
     const [editTaskId, setEditTaskId] = useState(null);
     const selectedProject = JSON.parse(localStorage.getItem('selectedProject'));
+
+        // Filter and paginate configurations
+        const filteredConfigs = members.filter((config) =>
+            config.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    
+        const totalItems = filteredConfigs.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const startIndex = (page - 1) * itemsPerPage;
+        const currentPageConfigs = filteredConfigs.slice(startIndex, startIndex + itemsPerPage);
+    
+        // Handle pagination
+        const goToPage = (pageNumber) => {
+            setPage(pageNumber);
+        };
+    
 
     const getAccessToken = () => {
         const tokens = JSON.parse(localStorage.getItem('tokens'));
@@ -357,13 +375,13 @@ const MemberManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {members
+                                    {currentPageConfigs
                                         .filter((member) =>
                                             member.name.toLowerCase().includes(searchTerm.toLowerCase())
                                         )
                                         .map((member, index) => (
                                             <tr key={member._id}>
-                                                <td>{index + 1}</td>
+                                                <td>{startIndex + index + 1}</td>
                                                 <td>{member.name}</td>
                                                 <td>{member.role}</td>
                                                 <td>
@@ -379,6 +397,30 @@ const MemberManagement = () => {
                                         ))}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                            <button className='pagination-btn'
+                                disabled={page === 1}
+                                onClick={() => goToPage(page - 1)}
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button 
+                                    id='page-btn'
+                                    key={i + 1}
+                                    className={page === i + 1 ? 'active' : ''}
+                                    onClick={() => goToPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button className='pagination-btn'
+                                disabled={page === totalPages}
+                                onClick={() => goToPage(page + 1)}
+                            >
+                                Next
+                            </button>
                         </div>
                     </div>
                     {showConfirmModal && (

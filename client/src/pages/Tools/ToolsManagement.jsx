@@ -9,6 +9,8 @@ const ToolManagement = () => {
     const [message, setMessage] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [page, setPage] = useState(1); // Current page
+    const [itemsPerPage] = useState(5); // Items per page
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -71,6 +73,21 @@ const ToolManagement = () => {
             setMessage('Error fetching tool details.');
         }
     };
+    // Filter and paginate configurations
+    const filteredConfigs = tools.filter((config) =>
+        config.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const totalItems = filteredConfigs.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const startIndex = (page - 1) * itemsPerPage;
+    const currentPageConfigs = filteredConfigs.slice(startIndex, startIndex + itemsPerPage);
+
+    // Handle pagination
+    const goToPage = (pageNumber) => {
+        setPage(pageNumber);
+    };
+
 
     const handleAddTool = async () => {
         try {
@@ -238,13 +255,13 @@ const ToolManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {tools
+                                    {currentPageConfigs
                                         .filter((tool) =>
                                             tool.name.toLowerCase().includes(searchTerm.toLowerCase())
                                         )
                                         .map((tool, index) => (
                                             <tr key={tool._id}>
-                                                <td>{index + 1}</td>
+                                                <td>{startIndex + index + 1}</td>
                                                 <td>{tool.name}</td>
                                                 <td>{tool.type}</td>
                                                 <td>{getStatusText(tool.status)}</td>
@@ -263,6 +280,30 @@ const ToolManagement = () => {
                                         ))}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                            <button className='pagination-btn'
+                                disabled={page === 1}
+                                onClick={() => goToPage(page - 1)}
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button 
+                                    id='page-btn'
+                                    key={i + 1}
+                                    className={page === i + 1 ? 'active' : ''}
+                                    onClick={() => goToPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button className='pagination-btn'
+                                disabled={page === totalPages}
+                                onClick={() => goToPage(page + 1)}
+                            >
+                                Next
+                            </button>
                         </div>
                     </div>
                     {showConfirmModal && (

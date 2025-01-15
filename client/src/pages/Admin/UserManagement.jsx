@@ -8,6 +8,8 @@ const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [message, setMessage] = useState('');
+  const [page, setPage] = useState(1); // Current page
+  const [itemsPerPage] = useState(5); // Items per page
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
@@ -43,6 +45,21 @@ const UserManagement = () => {
       setMessage('Error fetching user list.');
     }
   };
+  // Filter and paginate configurations
+  const filteredConfigs = users.filter((config) =>
+    config.username.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
+const totalItems = filteredConfigs.length;
+const totalPages = Math.ceil(totalItems / itemsPerPage);
+const startIndex = (page - 1) * itemsPerPage;
+const currentPageConfigs = filteredConfigs.slice(startIndex, startIndex + itemsPerPage);
+
+// Handle pagination
+const goToPage = (pageNumber) => {
+    setPage(pageNumber);
+};
+
 
   // Add User API
   const handleAddUser = async () => {
@@ -193,7 +210,7 @@ const UserManagement = () => {
       <Navbar />
       <div className="dashboard-main">
         <Sidebar />
-        <div className="dashboard-content">
+        <div className="admin-dashboard-content">
           <header className="dashboard-header">
             <h1 className="dashboard-title">User Management</h1>
             <p className="dashboard-description">Manage all user accounts here.</p>
@@ -229,14 +246,14 @@ const UserManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users
+                  {currentPageConfigs
                     .filter((user) =>
                       user.username.toLowerCase().includes(searchTerm.toLowerCase())
                     )
                     .map((user, index) => (
                       <tr key={user._id}>
-                        <td>{index + 1}</td>
-                        <td>{user.username}</td>
+                      <td>{startIndex + index + 1}</td>
+                      <td>{user.username}</td>
                         <td>{user.email}</td>
                         <td>{user.role}</td>
                         <td>
@@ -258,6 +275,30 @@ const UserManagement = () => {
                 </tbody>
               </table>
             </div>
+            <div className="pagination" style={{ display: totalItems <= 5? 'none' : '' }}>
+                            <button className='pagination-btn'
+                                disabled={page === 1}
+                                onClick={() => goToPage(page - 1)}
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button 
+                                    id='page-btn'
+                                    key={i + 1}
+                                    className={page === i + 1 ? 'active' : ''}
+                                    onClick={() => goToPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                            <button className='pagination-btn'
+                                disabled={page === totalPages}
+                                onClick={() => goToPage(page + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
           </div>
 
           {/* Modal for Add/Edit User */}

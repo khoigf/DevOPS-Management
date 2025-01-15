@@ -3,7 +3,8 @@
     flex-direction: column;
     background-color: #ccc;
     color: #000000;
-    height: 100vh;
+    height: 92vh;
+    padding-top: 50px;
 }
 
 .dashboard-header {
@@ -21,10 +22,14 @@
 }
 
 .dashboard-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  background-color: #ccc;
 }
 
 .dashboard-widgets {
@@ -217,6 +222,10 @@
   color: #fff;
 }
 
+.view-btn:hover {
+  background-color: #3a5f9e;
+}
+
 .save-btn:hover {
   background-color: #218838;
 }
@@ -348,4 +357,34 @@
 
 .task-table td span.status-done {
   background-color: #28a745;
+}
+
+.pagination{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+.pagination-btn{
+  background-color: #007bff;
+  border: 1px solid;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.pagination-btn:hover{
+  background-color: #0056b3;
+}
+#page-btn{
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 10px 12px;
+}
+#page-btn:hover{
+  cursor: pointer;
+  background-color: #c82333;
+}
+.active{
+  background-color: #f44336;
 }
