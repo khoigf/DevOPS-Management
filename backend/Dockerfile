@@ -1,5 +1,5 @@
 # Sử dụng Node.js làm base image
-FROM node:16
+FROM node:18
 
 # Thiết lập thư mục làm việc
 WORKDIR /app
