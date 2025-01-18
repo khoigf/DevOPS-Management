@@ -33,7 +33,7 @@ async function fetchGitHubLogs(owner, repo) {
         return logs;
     } catch (error) {
         console.error(`[GitHub Service] Error fetching logs for ${repo}:`, error.message);
-        throw error;
+        return null;
     }
 }
 
