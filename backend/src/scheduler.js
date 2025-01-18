@@ -23,7 +23,7 @@ async function scheduleAllProjects() {
             schedule.scheduleJob(`GitHubLogs-${project_id}`, '*/5 * * * *', async () => {
                 console.log(`[Scheduler] Fetching GitHub logs for project: ${repo}`);
                 const logs = await fetchGitHubLogs(owner, repo);
-                const parsedLogs = parseLogs(logs, 'GitHub Actions', project_id);
+                const parsedLogs = await parseLogs(logs, 'GitHub Actions', project_id);
                 await createIssuesFromLogs(parsedLogs, owner, repo);
                 console.log(`[Scheduler] GitHub logs processed for project: ${repo}`);
             });
@@ -32,7 +32,7 @@ async function scheduleAllProjects() {
             schedule.scheduleJob(`DockerLogs-${project_id}`, '*/5 * * * *', async () => {
                 console.log(`[Scheduler] Fetching Docker logs for project: ${repo}`);
                 const logs = await fetchDockerLogs(container_name);
-                const parsedLogs = parseLogs(logs, 'Docker', project_id);
+                const parsedLogs = await parseLogs(logs, 'Docker', project_id);
                 await createIssuesFromLogs(parsedLogs, owner, repo);
                 console.log(`[Scheduler] Docker logs processed for project: ${repo}`);
             });
