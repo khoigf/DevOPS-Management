@@ -47,6 +47,7 @@ async function parseLogs(rawLogs, source, project_id) {
                     const newLog = new Log(log);
                     await newLog.save();
                     console.log(`[Log Parser] Log saved: ${message}`);
+                    parsedLogs.push(log);
                 } else {
                     console.log(`[Log Parser] Duplicate log skipped: ${message}`);
                 }
@@ -54,7 +55,6 @@ async function parseLogs(rawLogs, source, project_id) {
                 console.error(`[Log Parser] Error processing log: ${error.message}`);
             }
 
-            parsedLogs.push(log);
         }
     }
 
