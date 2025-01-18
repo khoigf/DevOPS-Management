@@ -13,7 +13,7 @@ async function fetchGitHubLogs(owner, repo) {
         });
 
         const latestRun = data.workflow_runs[0];
-        console.log(`[GitHub Service] Latest run for ${repo}:`, latestRun);
+        //console.log(`[GitHub Service] Latest run for ${repo}:`, latestRun);
         if (!latestRun) {
             console.warn(`[GitHub Service] No workflow runs found for project: ${repo}`);
             return '';
